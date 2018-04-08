@@ -89,6 +89,7 @@ The configuration option `width_viewport` allows to define the occupying width o
 
 ## TODO
 
+- add css class "flickr" somewhere
 - allow more control on cache expiration
 - allow for custom templates globally configured
 - allow for templates per tag via some arguments
