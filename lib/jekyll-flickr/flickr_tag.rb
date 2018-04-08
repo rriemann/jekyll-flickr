@@ -106,7 +106,7 @@ module Jekyll
           photo_attr += " alt=\"#{photo_caption}\""
         end
 
-        img_tag = "<img src=\"#{photo_legacy.source}\" srcset=\"#{srcset}\" sizes=\"#{sizes}\" #{photo_attr}>"
+        img_tag = "<img class=\"flickr\" src=\"#{photo_legacy.source}\" srcset=\"#{srcset}\" sizes=\"#{sizes}\" #{photo_attr}>"
 
         return img_tag if not config['figcaption']
 
@@ -136,7 +136,7 @@ module Jekyll
         return img_tag if photo_license.empty? and photo_caption.empty?
 
         return <<-HTML
-<figure>
+<figure class="flickr">
   #{img_tag}
   <figcaption>#{photo_caption}#{photo_license}</figcaption>
 </figure>

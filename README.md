@@ -89,7 +89,6 @@ The configuration option `width_viewport` allows to define the occupying width o
 
 ## TODO
 
-- add css class "flickr" somewhere
 - add option to enable a link from the image to the Flickr photo page or just a larger version of the image
 - allow more control on cache expiration
 - allow for custom templates globally configured
