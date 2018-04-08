@@ -115,8 +115,6 @@ module Jekyll
 
           owner_link = "&copy; Flickr/<a href=\"#{photo_data[:info]['urls'].first['_content']}\">#{photo_data[:info]['owner']['username']}</a>"
 
-          puts license.inspect
-
           license_link = if license[:url]
             "<a href=\"#{license[:url]}\">#{license[:name]}</a>"
           else
