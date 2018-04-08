@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'flickraw-cached'
+require 'jekyll-cache'
 
 module Jekyll
   module Flickr
