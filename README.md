@@ -76,7 +76,7 @@ flickr:
   api_key: <flickr_api_key>
   api_secret: <flickr_shared_secret>
   widths: [320, 640, 800, 1024, 1600]
-  width_legacy: 800
+  width_legacy: 1024
   width_viewport: 100vw
   figcaption: true
   license: true

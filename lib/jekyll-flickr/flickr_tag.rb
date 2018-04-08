@@ -10,7 +10,7 @@ module Jekyll
       # selection of sizes from those offered by Flickr API
       DEFAULT_CONFIG = {
         'widths' => [320, 640, 800, 1024, 1600],
-        'width_legacy' => 800,
+        'width_legacy' => 1024,
         'figcaption' => true,
         'license' => true,
         'caption' => true,
@@ -92,7 +92,7 @@ module Jekyll
 
         widths = config['widths'] + [config['width_legacy']]
         photo_sizes = photo_data[:sizes].select{ |photo| widths.include?(photo['width'].to_i) }
-        photo_legacy = photo_data[:sizes].find{ |photo| photo['width'].to_i == config['width_legacy']}
+        photo_legacy = photo_data[:sizes].find{ |photo| photo['width'].to_i == config['width_legacy']} || photo_data[:sizes].find{ |photo| photo['label'] == 'Original'}
 
         srcset = photo_sizes.map{|photo| "#{photo['source']} #{photo['width']}w"}.join(", ")
 
