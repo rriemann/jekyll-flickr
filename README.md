@@ -96,6 +96,7 @@ The configuration option `width_viewport` allows to define the occupying width o
 - allow for templates per tag via some arguments
 - block version (`Liquid::Block`) that allows to enclosure the caption
 - use a more sophisticated RegExp to allow for captions with quotation marks
+- privacy mode: download images to build to not require user requests to Flickr servers
 
 ## Similar Projects
 
