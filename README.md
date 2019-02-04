@@ -51,7 +51,7 @@ Use the tag as follows in your Jekyll pages, posts and collections:
 Example:
 
 ```liquid
-{% flickr 38285149681 "My favourite photo of the month." style="float: right;"}
+{% flickr 38285149681 "My favourite photo of the month." style="float: right;" %}
 ```
 
 This will create the following HTML output:
