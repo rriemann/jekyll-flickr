@@ -71,8 +71,24 @@ module Jekyll
         @text = text.strip
       end
 
+      def flickr
+        @@flickr ||= begin
+          FlickRaw.api_key = ENV['FLICKR_API_KEY'] || config['api_key']
+          FlickRaw.shared_secret = ENV['FLICKR_API_SECRET'] || config['api_secret']
+
+          @@flickr = FlickRaw::Flickr.new
+        end
+      end
+
+      def cache
+        @@cache ||= Jekyll::Cache::FileStore.new 'flickr'
+      end
+
+      def config
+        @@config ||= DEFAULT_CONFIG.merge(Jekyll.configuration({})['flickr'])
+      end
+
       def render(context)
-        config = DEFAULT_CONFIG.merge(context.registers[:site].config['flickr'])
 
         match = /(?<photo_id>\d+)(\s(\"(?<caption>[^"]+)\"))?(?<attr>.*)/.match @text
 
@@ -80,10 +96,7 @@ module Jekyll
         photo_caption = match.named_captures['caption']
         photo_attr = match.named_captures['attr']
 
-        cache = Jekyll::Cache::FileStore.new 'flickr'
-        photo_data = cache.fetch photo_id do
-          FlickRaw.api_key = ENV['FLICKR_API_KEY'] || config['api_key']
-          FlickRaw.shared_secret = ENV['FLICKR_API_SECRET'] || config['api_secret']
+        photo_data = cache.fetch photo_id, expires_in: -1 do # disable expiry in production and development environment
           {
             info:  flickr.photos.getInfo(photo_id: photo_id),
             sizes: flickr.photos.getSizes(photo_id: photo_id)

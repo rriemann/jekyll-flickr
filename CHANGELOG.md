@@ -1,5 +1,10 @@
 ## HEAD
 
+## 0.1.2 / 2019-03-06
+
+  * feature: reduce overhead due to class variables
+  * fix: disable expiry of the cache
+
 ## 0.1.1 / 2017-04-09
 
   * feature: add CSS class `flickr` to HTML
