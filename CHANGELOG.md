@@ -1,5 +1,14 @@
 ## HEAD
 
+## master 0.2.x / 2021-02-22
+
+  * dependencies: require Jekyll 4.x and use gem flickr instead of flickraw
+  * use native Jekyll cache API (<https://jekyllrb.com/tutorials/cache-api/>) instead of jekyll-cache
+
+## 0.1.3 / 2019-03-13
+
+  * refactor: use simpler API provided by gem flickraw 0.9.10
+
 ## 0.1.2 / 2019-03-06
 
   * feature: reduce overhead due to class variables

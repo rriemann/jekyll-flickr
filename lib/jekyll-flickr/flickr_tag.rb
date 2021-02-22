@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'flickraw-cached'
-require 'jekyll-cache'
+require 'flickr'
 
 module Jekyll
   module Flickr
@@ -73,15 +72,13 @@ module Jekyll
 
       def flickr
         @@flickr ||= begin
-          FlickRaw.api_key = ENV['FLICKR_API_KEY'] || config['api_key']
-          FlickRaw.shared_secret = ENV['FLICKR_API_SECRET'] || config['api_secret']
-
-          @@flickr = FlickRaw::Flickr.new
+          # by default, Flickr uses ENV FLICKR_API_KEY and FLICKR_SHARED_SECRET, support here legacy name FLICKR_API_SECRET, too
+          @@flickr = ::Flickr.new(ENV['FLICKR_API_KEY'] || config['api_key'], ENV['FLICKR_SHARED_SECRET'] || ENV['FLICKR_API_SECRET'] || config['api_secret'])
         end
       end
 
       def cache
-        @@cache ||= Jekyll::Cache::FileStore.new 'flickr'
+        @@cache ||= Jekyll::Cache.new("flickr")
       end
 
       def config
@@ -96,7 +93,7 @@ module Jekyll
         photo_caption = match.named_captures['caption']
         photo_attr = match.named_captures['attr']
 
-        photo_data = cache.fetch photo_id, expires_in: -1 do # disable expiry in production and development environment
+        photo_data = cache.getset photo_id do
           {
             info:  flickr.photos.getInfo(photo_id: photo_id),
             sizes: flickr.photos.getSizes(photo_id: photo_id)
