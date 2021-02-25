@@ -1,6 +1,6 @@
 ## HEAD
 
-## master 0.2.x / 2021-02-22
+## master 0.2.0 / 2021-02-25
 
   * dependencies: require Jekyll 4.x and use gem flickr instead of flickraw
   * use native Jekyll cache API (<https://jekyllrb.com/tutorials/cache-api/>) instead of jekyll-cache
