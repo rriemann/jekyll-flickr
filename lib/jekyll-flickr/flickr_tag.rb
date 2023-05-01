@@ -87,7 +87,7 @@ module Jekyll
 
       def render(context)
 
-        match = /(?<photo_id>\d+)(\s(\"(?<caption>[^"]+)\"))?(?<attr>.*)/.match @text
+        match = /(?<photo_id>\d+)(\s(\"(?<caption>[^"]*)\"))?(?<attr>.*)/.match @text
 
         photo_id = match.named_captures['photo_id']
         photo_caption = match.named_captures['caption']
@@ -104,6 +104,25 @@ module Jekyll
         photo_sizes = photo_data[:sizes].select{ |photo| widths.include?(photo['width'].to_i) }
         photo_legacy = photo_data[:sizes].find{ |photo| photo['width'].to_i == config['width_legacy']} || photo_data[:sizes].find{ |photo| photo['label'] == 'Original'}
 
+        # if these sizes are not found, pick the one closes to width_legacy
+        unless photo_legacy
+          candidate = nil
+          smallest_delta = nil
+          photo_data[:sizes].each do |photo|
+            current_delta = (photo['width'].to_i - config['width_legacy']).abs
+            if !smallest_delta || (current_delta < smallest_delta) 
+              candidate = photo
+              smallest_delta = current_delta
+            end
+          end
+          photo_legacy = candidate
+        end
+
+        # if no photo is found return
+        unless photo_legacy
+          return ""
+        end
+
         srcset = photo_sizes.map{|photo| "#{photo['source']} #{photo['width']}w"}.join(", ")
 
         sizes = unless photo_attr.include?('sizes=') then
@@ -118,7 +137,7 @@ module Jekyll
 
         img_tag = "<img class=\"flickr\" src=\"#{photo_legacy.source}\" srcset=\"#{srcset}\" sizes=\"#{sizes}\" #{photo_attr}>"
 
-        return img_tag if not config['figcaption']
+        return compute_html_tag(img_tag) if not config['figcaption']
 
         photo_license = if config['license'] then
           license = LICENSES[photo_data[:info].license.to_i]
@@ -141,12 +160,24 @@ module Jekyll
           ""
         end
 
-        return img_tag if photo_license.empty? and photo_caption.empty?
+        return compute_html_tag(img_tag) if photo_license.empty? and photo_caption.empty?
 
         return <<-HTML
 <figure class="flickr">
   #{img_tag}
   <figcaption>#{photo_caption}#{photo_license}</figcaption>
+</figure>
+        HTML
+      end
+
+      #######
+      private
+      #######
+
+      def compute_html_tag(img_tag)
+        return <<-HTML
+<figure class="flickr">
+  #{img_tag}
 </figure>
         HTML
       end
