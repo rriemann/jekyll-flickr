@@ -5,6 +5,7 @@ require 'flickr'
 module Jekyll
   module Flickr
     class FlickrTag < Liquid::Tag
+      CACHE_NAME = "Jekyll::Flickr::FlickrTag"
 
       # selection of sizes from those offered by Flickr API
       DEFAULT_CONFIG = {
@@ -78,7 +79,7 @@ module Jekyll
       end
 
       def cache
-        @@cache ||= Jekyll::Cache.new("flickr")
+        @@cache ||= Jekyll::Cache.new(CACHE_NAME)
       end
 
       def config

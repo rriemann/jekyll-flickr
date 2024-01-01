@@ -1,6 +1,11 @@
 ## HEAD
 
-## master 0.2.0 / 2021-02-25
+## 0.2.1 / 2024-01-01
+
+  * fix: change cache name according to recommendation from <https://jekyllrb.com/tutorials/cache-api/>
+  * feature: Add flexibility to searching for the right picture width and some minor issues (courtesy of <akarwande@coredigital.com>)
+
+## 0.2.0 / 2021-02-25
 
   * dependencies: require Jekyll 4.x and use gem flickr instead of flickraw
   * use native Jekyll cache API (<https://jekyllrb.com/tutorials/cache-api/>) instead of jekyll-cache
