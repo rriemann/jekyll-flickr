@@ -17,54 +17,6 @@ module Jekyll
         'width_viewport' => '100vw'
       }
 
-      # Flickr licenses from (added CC myself)
-      # https://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html
-      LICENSES = [
-        {
-          name: "All Rights Reserved", url: ""
-        },
-        {
-          name: "CC Attribution-NonCommercial-ShareAlike License",
-          url: "https://creativecommons.org/licenses/by-nc-sa/2.0/"
-        },
-        {
-          name: "CC Attribution-NonCommercial License",
-          url: "https://creativecommons.org/licenses/by-nc/2.0/"
-        },
-        {
-          name: "CC Attribution-NonCommercial-NoDerivs License",
-          url: "https://creativecommons.org/licenses/by-nc-nd/2.0/"
-        },
-        {
-          name: "CC Attribution License",
-          url: "https://creativecommons.org/licenses/by/2.0/"
-        },
-        {
-          name: "CC Attribution-ShareAlike License",
-          url: "https://creativecommons.org/licenses/by-sa/2.0/"
-        },
-        {
-          name: "CC Attribution-NoDerivs License",
-          url: "https://creativecommons.org/licenses/by-nd/2.0/",
-        },
-        {
-          name: "No known copyright restrictions",
-          url: "https://www.flickr.com/commons/usage/"
-        },
-        {
-          name: "United States Government Work",
-          url: "http://www.usa.gov/copyright.shtml"
-        },
-        {
-          name: "Public Domain Dedication (CC0)",
-          url: "https://creativecommons.org/publicdomain/zero/1.0/"
-        },
-        {
-          name: "Public Domain Mark",
-          url: "https://creativecommons.org/publicdomain/mark/1.0/"
-        }
-      ]
-
       def initialize(tag_name, text, tokens)
         super
 
@@ -80,6 +32,13 @@ module Jekyll
 
       def cache
         @@cache ||= Jekyll::Cache.new(CACHE_NAME)
+      end
+
+      def licenses
+        @@licenses ||= begin
+          # https://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html
+          @@licenses = flickr.photos.licenses.getInfo.sort_by{ |license| license.id.to_i }
+        end
       end
 
       def config
@@ -141,7 +100,7 @@ module Jekyll
         return compute_html_tag(img_tag) if not config['figcaption']
 
         photo_license = if config['license'] then
-          license = LICENSES[photo_data[:info].license.to_i]
+          license = licenses[photo_data[:info].license.to_i]
 
           owner_link = "&copy; Flickr/<a href=\"#{photo_data[:info]['urls'].first['_content']}\">#{photo_data[:info]['owner']['username']}</a>"
 
